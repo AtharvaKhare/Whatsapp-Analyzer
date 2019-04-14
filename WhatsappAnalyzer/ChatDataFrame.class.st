@@ -40,12 +40,14 @@ ChatDataFrame >> parseChat: chatFilePath [
 					commaIndex := line indexOf: $,.
 					hyphenIndex := line indexOf: $-.
 					colonIndex := line indexOf: $: startingAt: hyphenIndex.
-					self addRow: { 
-						line copyUpTo: $, .
-						line copyFrom: commaIndex+2 to: hyphenIndex-2 .
-						line copyFrom: hyphenIndex+2 to: colonIndex-1 .
-						(line copyFrom: colonIndex+1 to: line size) allButFirst
-			 			} named: self numberOfRows.
+					(colonIndex ~= 0 ) ifTrue: [ 
+						self addRow: { 
+							line copyUpTo: $, .
+							line copyFrom: commaIndex+2 to: hyphenIndex-2 .
+							line copyFrom: hyphenIndex+2 to: colonIndex-1 .
+							(line copyFrom: colonIndex+1 to: line size) allButFirst
+			 				} named: self numberOfRows.
+							]
 				 ]
 				ifFalse: [
 					oldRow := self row: (self size - 1).
