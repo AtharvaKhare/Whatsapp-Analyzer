@@ -8,14 +8,7 @@ Class {
 }
 
 { #category : #utilities }
-WhatsappReader >> createDataFrame [ 
-	"Creates an empty dataframe with four columns parsed from Whatsapp chat"
-
-	^ DataFrame withColumnNames: #('Date' 'Time' 'Author' 'Message')
-]
-
-{ #category : #utilities }
-WhatsappReader >> insert: line into: df [
+WhatsappReader class >> insert: line into: df [
   "Parses given line and inserts it as a row in dataframe. An utility method."
 
   | commaIndex hyphenIndex colonIndex oldRow |
@@ -43,6 +36,13 @@ WhatsappReader >> insert: line into: df [
   ]
 ]
 
+{ #category : #utilities }
+WhatsappReader >> createDataFrame [ 
+	"Creates an empty dataframe with four columns parsed from Whatsapp chat"
+
+	^ DataFrame withColumnNames: #('Date' 'Time' 'Author' 'Message')
+]
+
 { #category : #reading }
 WhatsappReader >> readFrom: chatFileReference [
 	"Read Whatsapp chat and add it into the dataframe. Takes FileRefernce as it's argument"
@@ -52,7 +52,7 @@ WhatsappReader >> readFrom: chatFileReference [
 	chatFileReference readStreamDo: [ :inputStream |
 		[ inputStream atEnd ] whileFalse: [ 
 			line := inputStream nextLine.
-			self insert: line into: df.
+			self class insert: line into: df.
 			]
 		 ].
 	^ df
