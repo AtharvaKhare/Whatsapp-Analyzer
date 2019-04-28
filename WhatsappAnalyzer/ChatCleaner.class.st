@@ -77,11 +77,9 @@ ChatCleaner class >> removeStopwordsFrom: df [
 	| stopWords words |
 	stopWords := self getStopwords.
 	^ (df column: #Message) collect: [ :message |
-		words := message splitOn: Character space.
-		words := words collect: [ :word |
-			(stopWords includes: (word asLowercase))
-			ifTrue: ''
-			ifFalse: word
+		words := ((message trimBoth) splitOn: ('\s+' asRegex)).
+		words := words select: [ :word |
+			stopWords includes: (word asLowercase)
 			 ].
 		' ' join: words
 		 ]

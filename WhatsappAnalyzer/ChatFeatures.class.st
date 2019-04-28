@@ -13,16 +13,10 @@ Class {
 { #category : #extraction }
 ChatFeatures class >> getCharNgramsFromDataFrame: df withN: n [
 	"Returns a DataFrame of word ngrams with n = parameter n."
-
-	| outputDf ngrams |
 	
-	outputDf := DataFrame withColumnNames: #('Author' 'Ngrams').
-	df do: [ :row |
-		ngrams := self getCharNgramsFromLine: (row at: #Message) withN: n.
-		outputDf addRow: { row at: #Author . ngrams } named: (row name).
-	].
-
-	^ outputDf
+	^ ((df column: #Message) collect: [ :line |
+			self getCharNgramsFromLine: line withN: n.
+			]) asArray.
 ]
 
 { #category : #extraction }
@@ -47,17 +41,12 @@ ChatFeatures class >> getCharNgramsFromLine: line withN: n [
 
 { #category : #extraction }
 ChatFeatures class >> getNgramsFromDataFrame: df withN: n [
-	"Returns a DataFrame of word ngrams with n = parameter n."
+	"Returns an array of word ngrams with n = parameter n."
 
-	| outputDf ngrams |
 	
-	outputDf := DataFrame withColumnNames: #('Author' 'Ngrams').
-	df do: [ :row |
-		ngrams := self getNgramsFromLine: (row at: #Message) withN: n.
-		outputDf addRow: { row at: #Author . ngrams } named: (row name).
-	].
-
-	^ outputDf
+	^ ((df column: #Message) collect: [ :line |
+			self getNgramsFromLine: line withN: n.
+			]) asArray.
 ]
 
 { #category : #extraction }
