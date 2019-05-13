@@ -71,6 +71,18 @@ ChatCleaner class >> messagesAsLowercase: df [
 ]
 
 { #category : #removing }
+ChatCleaner class >> removeMessages: blacklistSet from: df [
+	"Removes messages present in blacklistSet from df"
+
+	| outputDf |
+	outputDf := df reject: [ :row |
+		blacklistSet includes: (row at: #Message)
+		].
+	^ outputDf
+	
+]
+
+{ #category : #removing }
 ChatCleaner class >> removeStopwordsFrom: df [
 	"Removes stop words and returns Message dataseries"
 
